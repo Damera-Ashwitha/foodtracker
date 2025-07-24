@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Your Personal Fitness Tracker</title>
+    <style>
+    /* CSS Styles */
+    :root {
+        --primary: #4361ee;
+        --primary-light: #4895ef;
+        --secondary: #3f37c9;
+        --success: #4cc9f0;
+        --danger: #f72585;
+        --warning: #f8961e;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
+        --transition: all 0.3s ease;
+        --border-radius: 12px;
+        --border-radius-sm: 8px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+        background-color: #f5f7ff;
+        color: var(--dark);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: var(--white);
+        padding: 30px 0;
+        text-align: center;
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    header::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    header::after {
+        content: '';
+        position: absolute;
+        bottom: -80px;
+        left: -80px;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+    }
+
+    header h1 {
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+        font-weight: 800;
+        position: relative;
+        z-index: 1;
+    }
+
+    header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+    }
+
+    .logo {
+        font-weight: bold;
+        color: var(--white);
+        text-decoration: none;
+        font-size: 1.8rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .logo::before {
+        content: '🏋️';
+        margin-right: 10px;
+        font-size: 1.5rem;
+    }
+
+    .main {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 30px;
+    }
+
+    .sidebar, .content {
+        background: var(--white);
+        padding: 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+    }
+
+    .sidebar:hover, .content:hover {
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+    }
+
+    h2 {
+        color: var(--primary);
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+        font-weight: 700;
+        position: relative;
+    }
+
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background: var(--primary);
+    }
+
+    h3 {
+        color: var(--dark);
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: var(--dark);
+        font-size: 0.95rem;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius-sm);
+        font-size: 16px;
+        transition: var(--transition);
+        background-color: var(--light);
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        background-color: var(--white);
+    }
+
+    button {
+        background-color: var(--primary);
+        color: var(--white);
+        border: none;
+        padding: 14px 24px;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button:hover {
+        background-color: var(--secondary);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .btn-secondary {
+        background-color: var(--primary-light);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--primary);
+    }
+
+    .btn-success {
+        background-color: var(--success);
+    }
+
+    .btn-success:hover {
+        background-color: #3aa8d8;
+    }
+
+    .btn-danger {
+        background-color: var(--danger);
+    }
+
+    .btn-danger:hover {
+        background-color: #e5177a;
+    }
+
+    .card {
+        background: var(--white);
+        border-radius: var(--border-radius-sm);
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        border-left: 4px solid var(--primary);
+    }
+
+    .card:hover {
+        box-shadow: var(--shadow-hover);
+    }
+
+    .progress-container {
+        margin: 30px 0;
+        background: var(--light);
+        padding: 20px;
+        border-radius: var(--border-radius-sm);
+    }
+
+    .progress-bar {
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+    .progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        width: 0%;
+        transition: width 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+        border-radius: 6px;
+    }
+
+    .food-analysis {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .food-image-container {
+        width: 220px;
+        height: 220px;
+        border: 2px dashed #dee2e6;
+        margin: 0 auto 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        transition: var(--transition);
+        position: relative;
+        background-color: var(--light);
+    }
+
+    .food-image-container:hover {
+        border-color: var(--primary);
+        background-color: rgba(67, 97, 238, 0.05);
+    }
+
+    .food-image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        display: none;
+        border-radius: var(--border-radius-sm);
+    }
+
+    .food-image-container span {
+        color: var(--gray);
+        font-weight: 500;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .food-image-container:hover span {
+        color: var(--primary);
+    }
+
+    .recommendations {
+        margin-top: 40px;
+    }
+
+    .recommendation-card {
+        background: var(--light);
+        border-left: 4px solid var(--primary);
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+        transition: var(--transition);
+    }
+
+    .recommendation-card:hover {
+        transform: translateX(5px);
+    }
+
+    .recommendation-card h4 {
+        color: var(--primary);
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    .recommendation-card ul {
+        padding-left: 20px;
+        margin-top: 10px;
+    }
+
+    .recommendation-card li {
+        margin-bottom: 8px;
+        color: var(--dark);
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .tabs {
+        display: flex;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .tab {
+        padding: 12px 24px;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: var(--transition);
+        font-weight: 500;
+        color: var(--gray);
+        position: relative;
+    }
+
+    .tab:hover {
+        color: var(--primary);
+    }
+
+    .tab.active {
+        border-bottom-color: var(--primary);
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .food-log {
+        margin-top: 30px;
+    }
+
+    .food-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        transition: var(--transition);
+    }
+
+    .food-item:hover {
+        background-color: var(--light);
+    }
+
+    .food-item:last-child {
+        border-bottom: none;
+    }
+
+    .nutrition-facts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .nutrition-card {
+        text-align: center;
+        padding: 20px;
+        background: var(--white);
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+    }
+
+    .nutrition-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .nutrition-card h3 {
+        color: var(--primary);
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+
+    .nutrition-card p:first-of-type {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 5px;
+    }
+
+    .nutrition-card p:last-of-type {
+        color: var(--gray);
+        font-size: 0.9rem;
+    }
+
+    /* Loading animation */
+    @keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+    }
+
+    .loading {
+        animation: pulse 1.5s infinite;
+    }
+
+    /* Responsive design */
+    @media (max-width: 992px) {
+        .main {
+            grid-template-columns: 1fr;
+        }
+        
+        .nutrition-facts {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        header h1 {
+            font-size: 2.2rem;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .nutrition-facts {
+            grid-template-columns: 1fr;
+        }
+        
+        .food-image-container {
+            width: 180px;
+            height: 180px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 15px;
+        }
+        
+        header {
+            padding: 25px 0;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .sidebar, .content {
+            padding: 20px 15px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+        }
+    }
+</style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>FitTrack</h1>
+            <p>Your personal fitness and nutrition companion</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main">
+            <div class="sidebar">
+                <h2>User Profile</h2>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" placeholder="Enter your age">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender">
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" placeholder="Enter your height">
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" placeholder="Enter your weight">
+                </div>
+                <div class="form-group">
+                    <label for="goal">Fitness Goal</label>
+                    <select id="goal">
+                        <option value="">Select your goal</option>
+                        <option value="weight-loss">Weight Loss</option>
+                        <option value="muscle-gain">Muscle Gain</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="endurance">Endurance Training</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="activity">Activity Level</label>
+                    <select id="activity">
+                        <option value="">Select activity level</option>
+                        <option value="sedentary">Sedentary (little or no exercise)</option>
+                        <option value="light">Lightly active (light exercise 1-3 days/week)</option>
+                        <option value="moderate">Moderately active (moderate exercise 3-5 days/week)</option>
+                        <option value="active">Active (hard exercise 6-7 days/week)</option>
+                        <option value="very-active">Very active (very hard exercise & physical job)</option>
+                    </select>
+                </div>
+                <button id="saveProfile">Save Profile</button>
+
+                <div class="progress-container" id="progressSection" style="display: none;">
+                    <h3>Your Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progressBar"></div>
+                    </div>
+                    <p id="progressText">0% towards your goal</p>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="tabs">
+                    <div class="tab active" data-tab="dashboard">Dashboard</div>
+                    <div class="tab" data-tab="food">Food Tracking</div>
+                    <div class="tab" data-tab="recommendations">Recommendations</div>
+                    <div class="tab" data-tab="history">History</div>
+                </div>
+
+                <div class="tab-content active" id="dashboard">
+                    <h2>Welcome to FitTrack</h2>
+                    <p id="welcomeMessage">Please complete your profile to get started with personalized fitness tracking.</p>
+                    
+                    <div class="nutrition-facts" id="nutritionFacts" style="display: none;">
+                        <div class="nutrition-card">
+                            <h3>Calories</h3>
+                            <p id="calories">0</p>
+                            <p>kcal</p>
+                        </div>
+                        <div class="nutrition-card">
+                            <h3>Protein</h3>
+                            <p id="protein">0</p>
+                            <p>g</p>
+                        </div>
+                        <div class="nutrition-card">
+                            <h3>Carbs</h3>
+                            <p id="carbs">0</p>
+                            <p>g</p>
+                        </div>
+                        <div class="nutrition-card">
+                            <h3>Fat</h3>
+                            <p id="fat">0</p>
+                            <p>g</p>
+                        </div>
+                        <div class="nutrition-card">
+                            <h3>Fiber</h3>
+                            <p id="fiber">0</p>
+                            <p>g</p>
+                        </div>
+                        <div class="nutrition-card">
+                            <h3>Sugar</h3>
+                            <p id="sugar">0</p>
+                            <p>g</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="food">
+                    <h2>Food Tracking</h2>
+                    <div class="food-analysis">
+                        <div class="food-image-container" id="foodImageContainer">
+                            <span>Click to upload food image</span>
+                            <img id="foodImagePreview" alt="Food preview">
+                        </div>
+                        <input type="file" id="foodImageUpload" accept="image/*" style="display: none;">
+                        <button id="analyzeFood" class="btn-secondary">Analyze Food</button>
+                    </div>
+
+                    <div id="foodAnalysisResult" class="hidden">
+                        <h3>Analysis Result</h3>
+                        <div id="foodDetails"></div>
+                        <button id="addToLog" class="btn-success">Add to Food Log</button>
+                    </div>
+
+                    <div class="food-log">
+                        <h3>Today's Food Log</h3>
+                        <div id="foodLog"></div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="recommendations">
+                    <h2>Personalized Recommendations</h2>
+                    <div id="dietRecommendations" class="recommendations">
+                        <p>Complete your profile to get personalized diet recommendations.</p>
+                    </div>
+                    <div id="exerciseRecommendations" class="recommendations">
+                        <h3>Exercise Recommendations</h3>
+                        <p>Complete your profile to get personalized exercise recommendations.</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="history">
+                    <h2>Your History</h2>
+                    <div id="historyChart">
+                        <p>Your progress history will appear here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MongoDB Atlas connection setup
+        const MONGODB_URI = "mongodb+srv://<username>:<password>@cluster0.mongodb.net/fittrack?retryWrites=true&w=majority";
+        
+        // In a real application, you would use proper backend code to connect to MongoDB
+        // For this frontend example, we'll simulate data storage using localStorage
+        // Replace this with actual MongoDB Atlas connection in a production environment
+        
+        // DOM Elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const foodImageContainer = document.getElementById('foodImageContainer');
+        const foodImageUpload = document.getElementById('foodImageUpload');
+        const foodImagePreview = document.getElementById('foodImagePreview');
+        const analyzeFoodBtn = document.getElementById('analyzeFood');
+        const foodAnalysisResult = document.getElementById('foodAnalysisResult');
+        const foodDetails = document.getElementById('foodDetails');
+        const addToLogBtn = document.getElementById('addToLog');
+        const foodLog = document.getElementById('foodLog');
+        const saveProfileBtn = document.getElementById('saveProfile');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const progressSection = document.getElementById('progressSection');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const nutritionFacts = document.getElementById('nutritionFacts');
+        const dietRecommendations = document.getElementById('dietRecommendations');
+        const exerciseRecommendations = document.getElementById('exerciseRecommendations');
+        
+        // Nutrition elements
+        const caloriesEl = document.getElementById('calories');
+        const proteinEl = document.getElementById('protein');
+        const carbsEl = document.getElementById('carbs');
+        const fatEl = document.getElementById('fat');
+        const fiberEl = document.getElementById('fiber');
+        const sugarEl = document.getElementById('sugar');
+        
+        // User data
+        let userProfile = JSON.parse(localStorage.getItem('userProfile')) || null;
+        let todayFoodLog = JSON.parse(localStorage.getItem('todayFoodLog')) || [];
+        let userHistory = JSON.parse(localStorage.getItem('userHistory')) || [];
+        
+        // Initialize the app
+        function init() {
+            // Load user profile if exists
+            if (userProfile) {
+                loadUserProfile();
+                updateDashboard();
+                updateFoodLog();
+                generateRecommendations();
+            }
+            
+            // Set up event listeners
+            setupEventListeners();
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+            
+            // Food image upload
+            foodImageContainer.addEventListener('click', () => {
+                foodImageUpload.click();
+            });
+            
+            foodImageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        foodImagePreview.src = event.target.result;
+                        foodImagePreview.style.display = 'block';
+                        foodImageContainer.querySelector('span').style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Analyze food button
+            analyzeFoodBtn.addEventListener('click', analyzeFood);
+            
+            // Add to log button
+            addToLogBtn.addEventListener('click', addToFoodLog);
+            
+            // Save profile button
+            saveProfileBtn.addEventListener('click', saveUserProfile);
+        }
+        
+        // Load user profile into form
+        function loadUserProfile() {
+            if (!userProfile) return;
+            
+            document.getElementById('name').value = userProfile.name || '';
+            document.getElementById('age').value = userProfile.age || '';
+            document.getElementById('gender').value = userProfile.gender || '';
+            document.getElementById('height').value = userProfile.height || '';
+            document.getElementById('weight').value = userProfile.weight || '';
+            document.getElementById('goal').value = userProfile.goal || '';
+            document.getElementById('activity').value = userProfile.activity || '';
+        }
+        
+        // Save user profile
+        function saveUserProfile() {
+            const name = document.getElementById('name').value.trim();
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const goal = document.getElementById('goal').value;
+            const activity = document.getElementById('activity').value;
+            
+            if (!name || !age || !gender || !height || !weight || !goal || !activity) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            userProfile = {
+                name,
+                age,
+                gender,
+                height,
+                weight,
+                goal,
+                activity,
+                bmi: calculateBMI(height, weight),
+                dailyCalories: calculateDailyCalories(age, gender, height, weight, activity, goal),
+                joinDate: new Date().toISOString()
+            };
+            
+            // Save to localStorage (in a real app, save to MongoDB)
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            
+            // Update UI
+            updateDashboard();
+            generateRecommendations();
+            
+            alert('Profile saved successfully!');
+        }
+        
+        // Calculate BMI
+        function calculateBMI(height, weight) {
+            return (weight / ((height / 100) ** 2)).toFixed(1);
+        }
+        
+        // Calculate daily calorie needs
+        function calculateDailyCalories(age, gender, height, weight, activity, goal) {
+            // Harris-Benedict equation
+            let bmr;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+            
+            // Activity multiplier
+            let activityMultiplier = 1.2;
+            switch (activity) {
+                case 'light': activityMultiplier = 1.375; break;
+                case 'moderate': activityMultiplier = 1.55; break;
+                case 'active': activityMultiplier = 1.725; break;
+                case 'very-active': activityMultiplier = 1.9; break;
+            }
+            
+            let calories = bmr * activityMultiplier;
+            
+            // Goal adjustment
+            switch (goal) {
+                case 'weight-loss': calories *= 0.85; break; // 15% deficit
+                case 'muscle-gain': calories *= 1.15; break; // 15% surplus
+                // maintenance stays the same
+            }
+            
+            return Math.round(calories);
+        }
+        
+        // Update dashboard with user data
+        function updateDashboard() {
+            if (!userProfile) return;
+            
+            welcomeMessage.textContent = `Welcome back, ${userProfile.name}! Here's your fitness dashboard.`;
+            progressSection.style.display = 'block';
+            nutritionFacts.style.display = 'grid';
+            
+            // Calculate progress (simplified for demo)
+            const progress = calculateProgress();
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${progress}% towards your goal`;
+            
+            // Update nutrition facts (sum of today's food)
+            updateNutritionFacts();
+        }
+        
+        // Calculate progress (simplified for demo)
+        function calculateProgress() {
+            if (!userProfile || todayFoodLog.length === 0) return 0;
+            
+            const totalCalories = todayFoodLog.reduce((sum, food) => sum + food.calories, 0);
+            const progress = Math.min(100, Math.round((totalCalories / userProfile.dailyCalories) * 100));
+            
+            return progress;
+        }
+        
+        // Update nutrition facts display
+        function updateNutritionFacts() {
+            if (!userProfile) return;
+            
+            const totals = {
+                calories: 0,
+                protein: 0,
+                carbs: 0,
+                fat: 0,
+                fiber: 0,
+                sugar: 0
+            };
+            
+            todayFoodLog.forEach(food => {
+                totals.calories += food.calories || 0;
+                totals.protein += food.protein || 0;
+                totals.carbs += food.carbs || 0;
+                totals.fat += food.fat || 0;
+                totals.fiber += food.fiber || 0;
+                totals.sugar += food.sugar || 0;
+            });
+            
+            caloriesEl.textContent = totals.calories;
+            proteinEl.textContent = totals.protein.toFixed(1);
+            carbsEl.textContent = totals.carbs.toFixed(1);
+            fatEl.textContent = totals.fat.toFixed(1);
+            fiberEl.textContent = totals.fiber.toFixed(1);
+            sugarEl.textContent = totals.sugar.toFixed(1);
+        }
+        
+        // Analyze food (simulated - in a real app, use a food recognition API)
+        async function analyzeFood() {
+    const file = foodImageUpload.files[0];
+    if (!file) {
+        alert('Please upload an image first');
+        return;
+    }
+
+    analyzeFoodBtn.disabled = true;
+    analyzeFoodBtn.textContent = 'Analyzing...';
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch('/predict', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Prediction failed');
+        }
+
+        const result = await response.json();
+
+        // Show prediction result in your UI
+        const food = result.food;
+        const calories = result.calories;
+
+        foodDetails.innerHTML = `
+            <h4>${food}</h4>
+            <p>Estimated Calories: ${calories}</p>
+        `;
+
+        sessionStorage.setItem('currentFood', JSON.stringify({
+            name: food,
+            calories: parseInt(calories),
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+            fiber: 0,
+            sugar: 0,
+            serving: "1 portion"
+        }));
+
+        foodAnalysisResult.classList.remove('hidden');
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+
+    analyzeFoodBtn.disabled = false;
+    analyzeFoodBtn.textContent = 'Analyze Food';
+}
+
+        
+        // Add food to log
+        function addToFoodLog() {
+            const currentFood = JSON.parse(sessionStorage.getItem('currentFood'));
+            if (!currentFood) return;
+            
+            // Add timestamp
+            currentFood.timestamp = new Date().toISOString();
+            
+            // Add to today's log
+            todayFoodLog.push(currentFood);
+            
+            // Save to localStorage (in a real app, save to MongoDB)
+            localStorage.setItem('todayFoodLog', JSON.stringify(todayFoodLog));
+            
+            // Update UI
+            updateFoodLog();
+            updateDashboard();
+            
+            // Reset
+            foodAnalysisResult.classList.add('hidden');
+            foodImagePreview.style.display = 'none';
+            foodImageContainer.querySelector('span').style.display = 'block';
+            foodImageUpload.value = '';
+            sessionStorage.removeItem('currentFood');
+        }
+        
+        // Update food log display
+        function updateFoodLog() {
+            if (todayFoodLog.length === 0) {
+                foodLog.innerHTML = '<p>No food logged today yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            todayFoodLog.forEach((food, index) => {
+                html += `
+                    <div class="food-item">
+                        <div>
+                            <strong>${food.name}</strong> (${food.serving})
+                        </div>
+                        <div>
+                            ${food.calories} kcal
+                            <button class="btn-danger" onclick="removeFoodItem(${index})" style="margin-left: 10px; padding: 5px 10px;">×</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            foodLog.innerHTML = html;
+        }
+        
+        // Remove food item from log
+        function removeFoodItem(index) {
+            todayFoodLog.splice(index, 1);
+            localStorage.setItem('todayFoodLog', JSON.stringify(todayFoodLog));
+            updateFoodLog();
+            updateDashboard();
+        }
+        
+        // Generate diet and exercise recommendations
+        function generateRecommendations() {
+            if (!userProfile) return;
+            
+            // Diet recommendations based on goal
+            let dietRec = '';
+            switch (userProfile.goal) {
+                case 'weight-loss':
+                    dietRec = `
+                        <div class="recommendation-card">
+                            <h4>Weight Loss Diet</h4>
+                            <p>To achieve your weight loss goal, focus on:</p>
+                            <ul>
+                                <li>High-protein foods (chicken, fish, tofu)</li>
+                                <li>Plenty of vegetables (leafy greens, broccoli)</li>
+                                <li>Healthy fats (avocados, nuts, olive oil)</li>
+                                <li>Complex carbs (whole grains, sweet potatoes)</li>
+                                <li>Aim for a daily calorie intake of about ${userProfile.dailyCalories} kcal</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'muscle-gain':
+                    dietRec = `
+                        <div class="recommendation-card">
+                            <h4>Muscle Gain Diet</h4>
+                            <p>To support muscle growth, focus on:</p>
+                            <ul>
+                                <li>High-protein foods (1.6-2.2g per kg of body weight)</li>
+                                <li>Quality carbs for energy (rice, oats, quinoa)</li>
+                                <li>Healthy fats for hormone production</li>
+                                <li>Aim for a daily calorie intake of about ${userProfile.dailyCalories} kcal</li>
+                                <li>Consider protein timing around workouts</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                default:
+                    dietRec = `
+                        <div class="recommendation-card">
+                            <h4>Balanced Diet</h4>
+                            <p>For general health and maintenance:</p>
+                            <ul>
+                                <li>Balanced macronutrients (30% protein, 40% carbs, 30% fat)</li>
+                                <li>Variety of colorful vegetables and fruits</li>
+                                <li>Whole grains and lean proteins</li>
+                                <li>Aim for a daily calorie intake of about ${userProfile.dailyCalories} kcal</li>
+                            </ul>
+                        </div>
+                    `;
+            }
+            
+            dietRecommendations.innerHTML = dietRec;
+            
+            // Exercise recommendations
+            let exerciseRec = '';
+            switch (userProfile.goal) {
+                case 'weight-loss':
+                    exerciseRec = `
+                        <div class="recommendation-card">
+                            <h4>Weight Loss Exercise Plan</h4>
+                            <p>For optimal weight loss:</p>
+                            <ul>
+                                <li>Cardio: 3-5 sessions per week (30-60 mins)</li>
+                                <li>Strength training: 2-3 sessions per week</li>
+                                <li>HIIT workouts for metabolic boost</li>
+                                <li>Daily movement (walking, stairs)</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'muscle-gain':
+                    exerciseRec = `
+                        <div class="recommendation-card">
+                            <h4>Muscle Gain Workout Plan</h4>
+                            <p>For optimal muscle growth:</p>
+                            <ul>
+                                <li>Strength training: 4-5 sessions per week</li>
+                                <li>Focus on progressive overload</li>
+                                <li>Compound movements (squats, deadlifts, presses)</li>
+                                <li>Moderate cardio for heart health</li>
+                                <li>Proper rest and recovery</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                default:
+                    exerciseRec = `
+                        <div class="recommendation-card">
+                            <h4>General Fitness Plan</h4>
+                            <p>For overall fitness:</p>
+                            <ul>
+                                <li>Mix of cardio and strength training</li>
+                                <li>2-3 sessions of each per week</li>
+                                <li>Include flexibility/mobility work</li>
+                                <li>Find activities you enjoy</li>
+                            </ul>
+                        </div>
+                    `;
+            }
+            
+            exerciseRecommendations.innerHTML = exerciseRec;
+        }
+        
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+        
+        // Make removeFoodItem available globally
+        window.removeFoodItem = removeFoodItem;
+    </script>
+</body>
+</html>
